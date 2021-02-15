@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+
+	<description><![CDATA[My ZK Application]]></description>
+	<display-name>Shapes Handler</display-name>
+
+	<listener>
+		<description>ZK listener for session cleanup</description>
+		<listener-class>org.zkoss.zk.ui.http.HttpSessionListener</listener-class>
+	</listener>
+	<servlet>
+		<description>ZK loader for ZUML pages</description>
+		<servlet-name>zkLoader</servlet-name>
+		<servlet-class>org.zkoss.zk.ui.http.DHtmlLayoutServlet</servlet-class>
+
+		<!-- Must. Specifies URI of the update engine (DHtmlUpdateServlet).
+		It must be the same as <url-pattern> for the update engine.
+		-->
+		<init-param>
+			<param-name>update-uri</param-name>
+			<param-value>/zkau</param-value>
+		</init-param>
+		<!-- Optional. Specifies whether to compress the output
+		of the ZK loader. It speeds up the transmission over slow Internet.
+		However, if you configure a filter to post-processing the
+		output, you might have to disable it.
+
+		Default: true
+		<init-param>
+			<param-name>compress</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		-->
+		<!-- [Optional] Specifies the default log level: OFF, ERROR, WARNING,
+			INFO, DEBUG and FINER. If not specified, the system default is used.
+		<init-param>
+			<param-name>log-level</param-name>
+			<param-value>OFF</param-value>
+		</init-param>
+		-->
+		<load-on-startup>1</load-on-startup><!-- Must -->
+	</servlet>
+<!--	<servlet-mapping>-->
+<!--		<servlet-name>zkLoader</servlet-name>-->
+<!--		<url-pattern>*.zul</url-pattern>-->
+<!--	</servlet-mapping>-->
+<!--	<servlet-mapping>-->
+<!--		<servlet-name>zkLoader</servlet-name>-->
+<!--		<url-pattern>*.zhtml</url-pattern>-->
+<!--	</servlet-mapping>-->
+
+	<servlet-mapping>
+		<servlet-name>zkLoader</servlet-name>
+		<url-pattern>/zk/*</url-pattern>
+	</servlet-mapping>
+
+</web-app>

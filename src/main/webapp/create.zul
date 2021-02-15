@@ -1,0 +1,57 @@
+<window closable="true" title="Create Shape" border="normal" width="600px" height="800"
+        sizable="true" viewModel="@id('cm') @init('viewModel.CreateViewModel')"
+        onClose="@command('closeWithoutSave')">
+    <vbox width="100%">
+        <hbox width="100%" pack="center" spacing="1em">
+            <cell>
+                <label>x:</label>
+                <textbox value="@save(param)"/>
+            </cell>
+            <cell>
+                <label>y:</label>
+                <textbox value="@save(param)"/>
+            </cell>
+        </hbox>
+        <hbox width="100%" pack="center" spacing="1em">
+            <cell>
+                <label>x:</label>
+                <textbox value="@save(param)"/>
+            </cell>
+            <cell>
+                <label>y:</label>
+                <textbox value="@save(param)"/>
+            </cell>
+        </hbox>
+        <hbox width="100%" pack="center" spacing="1em">
+            <cell>
+                <label>x:</label>
+                <textbox value="@save(param)"/>
+            </cell>
+            <cell>
+                <label>y:</label>
+                <textbox value="@save(param)"/>
+            </cell>
+        </hbox>
+        <hbox width="100%" pack="center" spacing="1em">
+            <cell>
+                <label>x:</label>
+                <textbox value="@save(param)"/>
+            </cell>
+            <cell>
+                <label>y:</label>
+                <textbox value="@save(param)"/>
+            </cell>
+        </hbox>
+        <hbox width="100%" pack="center" spacing="1em">
+            <cell>
+                <label>radius</label>
+                <textbox value="@save(param)"/>
+            </cell>
+        </hbox>
+
+        <hbox width="100%" pack="end">
+            <button label="Save" onClick="@command('addShape')"/>
+            <button label="Close" onClick="@command('closeWithoutSave')"/>
+        </hbox>
+    </vbox>
+</window>

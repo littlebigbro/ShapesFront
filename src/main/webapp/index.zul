@@ -1,0 +1,5 @@
+<zk>
+    <window border="normal" title="Shape handler">
+        <?forward uri="/login.zul"?>
+    </window>
+</zk>

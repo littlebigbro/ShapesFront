@@ -1,5 +1,5 @@
 <window title="Main menu" hflex="100" vflex="100" sizable="true" border="normal"
-        viewModel="@id('mm') @init('viewModel.MainViewModel')" onCreate="@command('findAll')">
+        viewModel="@id('mm') @init('viewModel.MainViewModel')" onCreate="@command('findAll')" onOK="@command('search')">
     <vbox width="100%">
         <hbox width="100%" pack="end">
             <cell hflex="90"/>
@@ -17,15 +17,15 @@
             <cell hflex="30" align="right">
                 <label>Поиск:</label>
                 <textbox value="@save(mm.keyword)"/>
-                <button label="Искать" image="/img/search.png" onClick="@command('search')"/>
+                <button label="Find" image="/img/search.png" onClick="@command('search')"/>
             </cell>
         </hbox>
     </vbox>
-        <listbox model="@init(mm.shapeList)" emptyMessage="Не найдено ни одной фигуры" rows="10"
+        <listbox model="@init(mm.shapeList)" emptyMessage="Не найдено ни одной фигуры" rows="5"
              selectedItem="@save(mm.selectedShape)">
 <!--    <listbox emptyMessage="Не найдено ни одной фигуры" rows="10"-->
         <listhead sizable="true">
-            <listheader label="id" width="10%"/>
+            <listheader label="Номер" width="10%"/>
             <listheader label="Наименование" width="20%"/>
             <listheader label="Параметры" width="70%"/>
         </listhead>
@@ -40,7 +40,7 @@
     <hlayout style="margin-top:20px" width="100%">
         <vlayout hflex="1">
             <label value="@load(mm.selectedShape.description)"/>
-            <button label="Площадь" image="/img/search.png"
+            <button label="Area" image="/img/search.png"
                     onClick="@command('calculateArea', id=mm.selectedShape._id)"/>
             <label>Площадь:</label>
             <label value="@load(mm.area)"/>

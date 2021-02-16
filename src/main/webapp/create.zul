@@ -5,51 +5,53 @@
         <hbox width="100%" pack="center" spacing="1em">
             <cell>
                 <label>x:</label>
-                <textbox value="@save(param)"/>
+                <textbox value="@save(cm.x)" onChange="@command('addParamToParams', param=cm.x)"/>
             </cell>
             <cell>
                 <label>y:</label>
-                <textbox value="@save(param)"/>
+                <textbox value="@save(cm.x)" onChange="@command('addParamToParams', param=cm.x)"/>
             </cell>
         </hbox>
         <hbox width="100%" pack="center" spacing="1em">
             <cell>
                 <label>x:</label>
-                <textbox value="@save(param)"/>
+                <textbox value="@save(cm.x)" onChange="@command('addParamToParams', param=cm.x)"/>
             </cell>
             <cell>
                 <label>y:</label>
-                <textbox value="@save(param)"/>
+                <textbox value="@save(cm.x)" onChange="@command('addParamToParams', param=cm.x)"/>
             </cell>
         </hbox>
         <hbox width="100%" pack="center" spacing="1em">
             <cell>
                 <label>x:</label>
-                <textbox value="@save(param)"/>
+                <textbox value="@save(cm.x)" onChange="@command('addParamToParams', param=cm.x)"/>
             </cell>
             <cell>
                 <label>y:</label>
-                <textbox value="@save(param)"/>
+                <textbox value="@save(cm.x)" onChange="@command('addParamToParams', param=cm.x)"/>
             </cell>
         </hbox>
         <hbox width="100%" pack="center" spacing="1em">
             <cell>
                 <label>x:</label>
-                <textbox value="@save(param)"/>
+                <textbox value="@save(cm.x)" onChange="@command('addParamToParams', param=cm.x)"/>
             </cell>
             <cell>
                 <label>y:</label>
-                <textbox value="@save(param)"/>
+                <textbox value="@save(cm.x)" onChange="@command('addParamToParams', param=cm.x)"/>
             </cell>
         </hbox>
         <hbox width="100%" pack="center" spacing="1em">
             <cell>
                 <label>radius</label>
-                <textbox value="@save(param)"/>
+                <textbox value="@save(cm.x)" onChange="@command('addParamToParams', param=cm.x)"/>
             </cell>
         </hbox>
 
         <hbox width="100%" pack="end">
+            <button label="showParams" onClick="@command('showParams')"/>
+            <label value="@load(cm.params)" />
             <button label="Save" onClick="@command('addShape')"/>
             <button label="Close" onClick="@command('closeWithoutSave')"/>
         </hbox>

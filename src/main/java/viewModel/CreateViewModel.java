@@ -15,7 +15,6 @@ public class CreateViewModel {
 
     @Command
     public void addShape() {
-
         closeWithoutSave();
     }
     @Command
@@ -26,7 +25,7 @@ public class CreateViewModel {
 
     @Command
     public void closeWithoutSave() {
-        Executions.sendRedirect("/main.zul");
+        Executions.sendRedirect("/zul/main.zul");
     }
 
     public double getX() {

@@ -1,0 +1,82 @@
+<window title="Main menu" hflex="100" vflex="100" sizable="true" border="normal"
+        viewModel="@id('mm') @init('viewModel.MainViewModel')" onCreate="@command('findAll')">
+    <vbox width="100%">
+        <hbox width="100%" pack="end">
+            <cell hflex="90"/>
+            <cell hflex="10" align="right">
+                <button label="Logout" onClick="@command('logout')"/>
+            </cell>
+        </hbox>
+        <hbox width="100%" pack="center" spacing="10em">
+            <cell hflex="70" align="left">
+                <button label="Create" href="create.zul"/>
+                <button label="View" onClick="@command('view')"/> <!--  -->
+                <button label="Edit" onClick="@command('edit')"/>
+                <button label="Delete" onClick="@command('delete', id=mm.selectedShape._id)"/>
+            </cell>
+            <cell hflex="30" align="right">
+                <label>Поиск:</label>
+                <textbox value="@save(mm.keyword)"/>
+                <button label="Find" image="/img/search.png" onClick="@command('search')"/>
+            </cell>
+        </hbox>
+    </vbox>
+    <hbox width="100%">
+        <listbox hflex="60" model="@init(mm.shapeList)" emptyMessage="Не найдено ни одной фигуры" rows="5"
+                 selectedItem="@save(mm.selectedShape)">
+            <!--    <listbox emptyMessage="Не найдено ни одной фигуры" rows="10"-->
+            <listhead sizable="true">
+                <listheader label="Номер" width="10%" align="center"/>
+                <listheader label="Наименование" width="20%"/>
+                <listheader label="Параметры" width="70%"/>
+            </listhead>
+            <template name="model">
+                <listitem>
+                    <listcell label="@init(each.id)" style="border-right:1px solid silver"></listcell>
+                    <listcell label="@init(each.ruName)" style="border-right:1px solid silver"></listcell>
+                    <listcell label="@init(each.params)"></listcell>
+                </listitem>
+            </template>
+        </listbox>
+        <cell hflex="40" style="background: yellow"/>
+    </hbox>
+    <hbox style="margin-top:20px" width="100%">
+        <vbox hflex="1">
+            <label value="@load(mm.selectedShape.description)"/>
+            <button label="Calculate area" image="/img/search.png"
+                    onClick="@command('calculateArea', id=mm.selectedShape._id)"/>
+            <label>Площадь:</label>
+            <label value="@load(mm.area)"/>
+        </vbox>
+    </hbox>
+    <!--move shape-->
+    <hbox style="margin-top:20px" width="100%" visible="false">
+        <vbox hflex="1">
+            <label value="@load(mm.selectedShape.description)"/>
+            <button label="Calculate area" image="/img/search.png"
+                    onClick="@command('calculateArea', id=mm.selectedShape._id)"/>
+            <label>Площадь:</label>
+            <label value="@load(mm.area)"/>
+        </vbox>
+    </hbox>
+    <!--scale shape-->
+    <hbox style="margin-top:20px" width="100%" visible="false">
+        <vbox hflex="1">
+            <textbox value="@save(mm.keyword)"/>
+            <button label="Calculate area" image="/img/search.png"
+                    onClick="@command('calculateArea', id=mm.selectedShape._id)"/>
+            <label>Площадь:</label>
+            <label value="@load(mm.area)"/>
+        </vbox>
+    </hbox>
+    <!--roll shape-->
+    <hbox style="margin-top:20px" width="100%" visible="false">
+        <vbox hflex="1">
+            <label value="@load(mm.selectedShape.description)"/>
+            <button label="Calculate area" image="/img/search.png"
+                    onClick="@command('calculateArea', id=mm.selectedShape._id)"/>
+            <label>Площадь:</label>
+            <label value="@load(mm.area)"/>
+        </vbox>
+    </hbox>
+</window>

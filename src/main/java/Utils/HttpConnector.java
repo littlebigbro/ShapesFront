@@ -50,9 +50,9 @@ public class HttpConnector {
         return response.toString();
     }
 
-    public static boolean authentication(String password) {
+    public static boolean authentication(String mapping) {
         String link = server + "/auth";
-        String serverResponse = getConnection(link, "POST", true, password, null);
+        String serverResponse = getConnection(link, "POST", true, mapping, null);
         return Boolean.parseBoolean(serverResponse);
     }
 
@@ -77,7 +77,14 @@ public class HttpConnector {
 
     public static void logout() {
         String link = server + "/logout";
-        String serverResponse = getConnection(link, "GET", true, null, null);
+        String serverResponse = getConnection(link, "GET", false, null, null);
         System.out.println(serverResponse);
+    }
+
+    public static String moveShape(String mapping) {
+        String link = server + "/moveShape";
+        byte[] bytes = mapping.getBytes(StandardCharsets.UTF_8);
+        String serverResponse = getConnection(link, "POST", true, null, bytes);
+        return serverResponse;
     }
 }

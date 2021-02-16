@@ -22,7 +22,7 @@ public class MainViewModel {
     @Command
     public void logout() {
         HttpConnector.logout();
-        Executions.sendRedirect("/login.zul");
+        Executions.sendRedirect("/zul/login.zul");
     }
 
     @Command
@@ -41,29 +41,28 @@ public class MainViewModel {
     @Command
     @NotifyChange("area")
     public void calculateArea(@BindingParam("_id") String _id) {
-        for (Shape shape : shapeService.findAll()) {
-            if (_id.equals(shape.get_id())) {
-                area = shapeService.calculateArea(shape);
-                break;
-            }
-        }
-    }
-
-
-    @Command
-    public void create() {
-
+        area = shapeService.calculateArea(_id);
     }
 
     @Command
-    public void view() {
+    public void moveShape(@BindingParam("_id") String _id, @BindingParam("x") String x, @BindingParam("y") String y) {
+        shapeService.moveShape(_id, x, y);
+        //необходимо делать релоад
+    }
+    @Command
+    public void rollShape() {
+
+    }
+    @Command
+    public void scaleShape() {
 
     }
 
     @Command
-    public void edit() {
+    public void view() { }
 
-    }
+    @Command
+    public void edit() { }
 
     @Command
     public void delete(@BindingParam("_id") String _id) {

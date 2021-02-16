@@ -91,7 +91,7 @@ public class Shape {
     public String getDescription() {
         StringBuilder sb = new StringBuilder();
         sb.append(getRuName())
-                .append(" c id = ")
+                .append(" c номером = ")
                 .append(getId())
                 .append(", и точками: ")
                 .append(getParams());

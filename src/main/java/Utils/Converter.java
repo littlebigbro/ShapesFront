@@ -37,4 +37,15 @@ public class Converter {
         }
         return shapes;
     }
+
+    public static String createMapping(String[] params) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < params.length; i = i + 2) {
+            sb.append(params[i]).append("=").append(params[i + 1]);
+            if (params.length - 2 > i) {
+                sb.append(";");
+            }
+        }
+        return sb.toString();
+    }
 }

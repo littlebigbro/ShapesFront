@@ -1,20 +1,22 @@
 package viewModel;
 
+import Utils.Converter;
 import Utils.HttpConnector;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Messagebox;
 
 public class LoginViewModel {
-    private String password;
     private String username;
+    private String password;
     private boolean isLogin = false;
 
     @Command
     public void login() {
-        if (HttpConnector.authentication(password)) {
+        String[] params = {"username", username, "password", password};
+        if (HttpConnector.authentication(Converter.createMapping(params))) {
             isLogin = true;
-            Executions.sendRedirect("/main.zul");
+            Executions.sendRedirect("/zul/main.zul");
         } else {
             isLogin = false;
             Messagebox.show("Wrong username or password", null, 0, Messagebox.ERROR);

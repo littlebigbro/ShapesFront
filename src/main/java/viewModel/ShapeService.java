@@ -4,11 +4,12 @@ import Utils.Converter;
 import Utils.HttpConnector;
 import model.Shape;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ShapeService {
-    private List<Shape> shapeList = Converter.jsonToShapes(HttpConnector.getAll());
+    private List<Shape> shapeList = new ArrayList<>(Converter.jsonToShapes(HttpConnector.getAll()));
 
     public ShapeService() {
     }
@@ -54,14 +55,37 @@ public class ShapeService {
         updateShapeList(result);
     }
 
+    public void rollShape(String _id, String angle) {
+        Shape shape = findShapeInListBy_id(_id);
+        String json = Converter.shapeToJSON(shape);
+        String[] params = {"json", json, "angle", angle};
+        String result = HttpConnector.rollShape(Converter.createMapping(params));
+        updateShapeList(result);
+    }
+
+    public void scaleShape(String _id, String scale) {
+        Shape shape = findShapeInListBy_id(_id);
+        String json = Converter.shapeToJSON(shape);
+        String[] params = {"json", json, "scale", scale};
+        String result = HttpConnector.scaleShape(Converter.createMapping(params));
+        updateShapeList(result);
+    }
+
     private void updateShapeList(String resultJson) {
         Shape newShape = Converter.jsonToShapes(resultJson).get(0);
-        for(int i = 0; i < shapeList.size(); i++) {
+        int index = -1;
+        for (int i = 0; i < shapeList.size(); i++) {
             if (newShape.get_id().equals(shapeList.get(i).get_id())) {
-                shapeList.remove(shapeList.get(i));
+                index = i;
+                break;
             }
         }
-        shapeList.add(newShape);
+        if (index >= 0) {
+            shapeList.remove(index);
+            shapeList.add(index, newShape);
+        } else {
+            shapeList.add(newShape);
+        }
     }
 
     private Shape findShapeInListBy_id(String _id) {
@@ -72,5 +96,4 @@ public class ShapeService {
         }
         return null;
     }
-
 }

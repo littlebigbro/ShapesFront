@@ -17,6 +17,7 @@ public class CreateViewModel {
     public void addShape() {
         closeWithoutSave();
     }
+
     @Command
     @NotifyChange
     public void addParamToParams(@BindingParam("cm.x") String param) {

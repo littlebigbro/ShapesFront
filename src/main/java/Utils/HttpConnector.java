@@ -87,4 +87,18 @@ public class HttpConnector {
         String serverResponse = getConnection(link, "POST", true, null, bytes);
         return serverResponse;
     }
+
+    public static String rollShape(String mapping) {
+        String link = server + "/rollShape";
+        byte[] bytes = mapping.getBytes(StandardCharsets.UTF_8);
+        String serverResponse = getConnection(link, "POST", true, null, bytes);
+        return serverResponse;
+    }
+
+    public static String scaleShape(String mapping) {
+        String link = server + "/scaleShape";
+        byte[] bytes = mapping.getBytes(StandardCharsets.UTF_8);
+        String serverResponse = getConnection(link, "POST", true, null, bytes);
+        return serverResponse;
+    }
 }

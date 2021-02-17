@@ -45,26 +45,36 @@ public class MainViewModel {
     }
 
     @Command
+    @NotifyChange("shapeList")
     public void moveShape(@BindingParam("_id") String _id, @BindingParam("x") String x, @BindingParam("y") String y) {
         shapeService.moveShape(_id, x, y);
-        //необходимо делать релоад
-    }
-    @Command
-    public void rollShape() {
-
-    }
-    @Command
-    public void scaleShape() {
-
+        findAll();
     }
 
     @Command
-    public void view() { }
+    @NotifyChange("shapeList")
+    public void rollShape(@BindingParam("_id") String _id, @BindingParam("angle") String angle) {
+        shapeService.rollShape(_id, angle);
+        findAll();
+    }
 
     @Command
-    public void edit() { }
+    @NotifyChange("shapeList")
+    public void scaleShape(@BindingParam("_id") String _id, @BindingParam("scale") String scale) {
+        shapeService.scaleShape(_id, scale);
+        findAll();
+    }
 
     @Command
+    public void view() {
+    }
+
+    @Command
+    public void edit() {
+    }
+
+    @Command
+    @NotifyChange("shapeList")
     public void delete(@BindingParam("_id") String _id) {
         deleteResult = shapeService.deleteShape(_id);
         findAll();

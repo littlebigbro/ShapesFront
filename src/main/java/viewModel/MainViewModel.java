@@ -18,7 +18,10 @@ public class MainViewModel {
 
     private boolean deleteResult = false;
     private String area = "0.0";
-
+    //TODO: Настроить:
+    // 1) Создание фигуры
+    // 2) Сохранение отредактированной/созданной фигуры
+    // 3) Отрисовку одной/всех фигур
     @Command
     public void logout() {
         HttpConnector.logout();
@@ -47,36 +50,36 @@ public class MainViewModel {
     @Command
     @NotifyChange("shapeList")
     public void moveShape(@BindingParam("_id") String _id, @BindingParam("x") String x, @BindingParam("y") String y) {
-        shapeService.moveShape(_id, x, y);
+        if (_id != null && !_id.isEmpty()) {
+            shapeService.moveShape(_id, x, y);
+        }
         findAll();
     }
 
     @Command
     @NotifyChange("shapeList")
     public void rollShape(@BindingParam("_id") String _id, @BindingParam("angle") String angle) {
-        shapeService.rollShape(_id, angle);
+        if (_id != null && !_id.isEmpty()) {
+            shapeService.rollShape(_id, angle);
+        }
         findAll();
     }
 
     @Command
     @NotifyChange("shapeList")
     public void scaleShape(@BindingParam("_id") String _id, @BindingParam("scale") String scale) {
-        shapeService.scaleShape(_id, scale);
+        if (_id != null && !_id.isEmpty()) {
+            shapeService.scaleShape(_id, scale);
+        }
         findAll();
-    }
-
-    @Command
-    public void view() {
-    }
-
-    @Command
-    public void edit() {
     }
 
     @Command
     @NotifyChange("shapeList")
     public void delete(@BindingParam("_id") String _id) {
-        deleteResult = shapeService.deleteShape(_id);
+        if (_id != null && !_id.isEmpty()) {
+            deleteResult = shapeService.deleteShape(_id);
+        }
         findAll();
     }
 

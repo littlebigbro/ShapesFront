@@ -1,4 +1,4 @@
-<window title="Main menu" hflex="100" vflex="100" sizable="true" border="normal"
+<window title="Main menu" width="60%" height="100%" sizable="true" border="normal"
         viewModel="@id('mm') @init('viewModel.MainViewModel')" onCreate="@command('findAll')">
     <vlayout width="100%" height="100%" style="overflow:auto;">
         <vbox id="topPanel" width="100%">
@@ -10,14 +10,12 @@
                     </cell>
                 </hbox>
                 <hbox width="100%" pack="center" style="margin-bottom:5px">
-                    <cell hflex="70" align="left">
+                    <cell hflex="60" align="left">
                         <button label="Create" style="margin-right:5px" href="create.zul"/>
-                        <!--                <button label="View" style="margin-right:5px" onClick="@command('view')"/> -->
-                        <!--                <button label="Edit" style="margin-right:5px" onClick="@command('edit')"/>-->
-                        <button label="Delete" style="margin-right:5px"
+                        <button if="${empty mm.selectedShape.id}" label="Delete" style="margin-right:5px"
                                 onClick="@command('delete', _id=mm.selectedShape._id)"/>
                     </cell>
-                    <cell hflex="30" align="right">
+                    <cell hflex="40" align="right">
                         <label style="margin-right:5px">Поиск:</label>
                         <textbox value="@save(mm.keyword)" style="margin-right:5px"/>
                         <button label="Find" image="/img/search.png" onClick="@command('search')"/>
@@ -41,49 +39,67 @@
                     </listitem>
                 </template>
             </listbox>
+        </hbox>
+        <hbox width="100%">
+            <vbox id="edit" hflex="60" style="border:1px solid black;">
+                <hbox width="100%" pack="start">
+                    <hbox vflex="1" hflex="30" style="border:1px solid black; margin:2px">
+                        <vbox hflex="1" vflex="1" align="center" style="border:1px solid red; margin:2px">
+                            <label>Площадь:</label>
+                            <hbox align="center">
+                                <textbox disabled="true" style="text-align: right" value="@load(mm.area)"/>
+                            </hbox>
+                            <vbox width="100%" align="center" pack="end">
+                                <button label="Calculate area"
+                                        onClick="@command('calculateArea', _id=mm.selectedShape._id)"/>
+                            </vbox>
+                        </vbox>
+                    </hbox>
+                    <!--move shape-->
+                    <hbox vflex="1" hflex="30" style="border:1px solid black; margin:2px">
+                        <vbox hflex="1" align="center" style="border:1px solid red; margin:2px">
+                            <label>Новый центр:</label>
+                            <hbox align="center">
+                                <label>X:</label>
+                                <textbox width="75px" constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры" style="text-align: right" value="@bind(xF)"/>
+                                <label>Y:</label>
+                                <textbox width="75px" constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры" style="text-align: right" value="@bind(yF)"/>
+                            </hbox>
+                            <hbox align="center">
+                            </hbox>
+                            <vbox width="100%" align="center" pack="end">
+                                <button label="Move shape"
+                                        onClick="@command('moveShape', _id=mm.selectedShape._id, x=xF, y=yF)"/>
+                            </vbox>
+                        </vbox>
+                    </hbox>
+                </hbox>
+                <hbox width="100%" pack="start" style="margin-top:2px">
+                    <!--scale shape-->
+                    <hbox style="border:1px solid black; margin:2px" hflex="50">
+                        <vbox hflex="1" align="center" style="border:1px solid red; margin:2px">
+                            <label>Коэффициент расширения/сужения:</label>
+                            <textbox width="75px" constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры" style="text-align: right" value="@bind(scaleF)"/>
+                            <vbox width="100%" align="center" pack="end">
+                                <button label="Scale shape"
+                                        onClick="@command('scaleShape', _id=mm.selectedShape._id, scale=scaleF)"/>
+                            </vbox>
+                        </vbox>
+                    </hbox>
+                    <!--roll shape-->
+                    <hbox style="border:1px solid black; margin:2px" hflex="50">
+                        <vbox hflex="1" align="center" style="border:1px solid red; margin:2px">
+                            <label>Угол поворота:</label>
+                            <textbox width="75px" constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры" style="text-align: right" value="@bind(angleF)"/>
+                            <vbox width="100%" align="center" pack="end">
+                                <button label="Roll shape"
+                                        onClick="@command('rollShape', _id=mm.selectedShape._id, angle=angleF)"/>
+                            </vbox>
+                        </vbox>
+                    </hbox>
+                </hbox>
+            </vbox>
             <cell hflex="40" style="border:1px solid silver"/>
         </hbox>
-        <vbox id="edit" style="border:1px solid silver">
-            <hbox style="margin-top:20px" width="100%">
-                <vbox hflex="1">
-                    <label value="@load(mm.selectedShape.description)"/>
-                    <button label="Calculate area" image="/img/search.png"
-                            onClick="@command('calculateArea', _id=mm.selectedShape._id)"/>
-                    <label>Площадь:</label>
-                    <label value="@load(mm.area)"/>
-                </vbox>
-            </hbox>
-            <!--move shape-->
-            <hbox style="margin-top:20px" width="100%" visible="true">
-                <vbox hflex="1">
-                    <label>Новый центр:</label>
-                    <label>X:</label>
-                    <textbox value="@bind(xF)"/>
-                    <label>Y:</label>
-                    <textbox value="@bind(yF)"/>
-                    <button label="Move shape" onClick="@command('moveShape', _id=mm.selectedShape._id, x=xF, y=yF)"/>
-                    <label value="@load(mm.selectedShape.description)"/>
-                </vbox>
-            </hbox>
-            <!--scale shape-->
-            <hbox style="margin-top:20px" width="100%" visible="true">
-                <vbox hflex="1">
-                    <label>Коэффициент расширения/сужения</label>
-                    <textbox value="@bind(scaleF)"/>
-                    <button label="Scale shape"
-                            onClick="@command('scaleShape', _id=mm.selectedShape._id, scale=scaleF)"/>
-                    <label value="@load(mm.selectedShape.description)"/>
-                </vbox>
-            </hbox>
-            <!--roll shape-->
-            <hbox style="margin-top:20px" width="100%" visible="true">
-                <vbox hflex="1">
-                    <label>Угол поворота:</label>
-                    <textbox value="@bind(angleF)"/>
-                    <button label="Roll shape" onClick="@command('rollShape', _id=mm.selectedShape._id, angle=angleF)"/>
-                    <label value="@load(mm.selectedShape.description)"/>
-                </vbox>
-            </hbox>
-        </vbox>
     </vlayout>
 </window>

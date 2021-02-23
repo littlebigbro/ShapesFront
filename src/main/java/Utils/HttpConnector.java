@@ -113,4 +113,11 @@ public class HttpConnector {
         String serverResponse = getConnection(link, "GET", true, null, null);
         return Integer.parseInt(serverResponse);
     }
+
+    public static void saveUpdatedShape(String json) {
+        String link = server + "/updateShape";
+        byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
+        String serverResponse = getConnection(link, "POST", true, null, bytes);
+        System.out.println(serverResponse);
+    }
 }

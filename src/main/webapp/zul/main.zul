@@ -30,7 +30,6 @@
             <listbox hflex="60" model="@init(mm.shapeList)" emptyMessage="Не найдено ни одной фигуры" rows="5"
                      selectedItem="@save(mm.selectedShape)"
                      onSelect="@command('isVisible', _id='resultTable')">
-                <!--                     onSelect="@command('isVisible', _id=mm.selectedShape._id)">-->
                 <listhead sizable="true">
                     <listheader label="Номер" width="8%" align="center"/>
                     <listheader label="Наименование" width="22%"/>
@@ -40,17 +39,29 @@
                     <listitem>
                         <listcell label="@init(each.id)" style="border-right:1px solid silver"/>
                         <listcell label="@init(each.ruName)" style="border-right:1px solid silver"/>
-                        <listcell label="@init(each.description)"/>
+                        <listcell label="@init(each.stringParams)"/>
                     </listitem>
                 </template>
             </listbox>
         </hbox>
         <hbox width="100%">
-            <vbox id="editBox" visible="@load(mm.editBox)" hflex="60" style="border:1px solid black;"
+            <vbox id="editBox" visible="@load(mm.editBox)" hflex="65" style="border:1px solid black;"
                   onClick="@command('isVisible', param='editBox')">
                 <hbox width="100%" pack="start">
                     <hbox vflex="1" hflex="30" style="border:1px solid black; margin:2px">
-                        <vbox hflex="1" vflex="1" align="center" style="border:1px solid red; margin:2px">
+                        <hbox hflex="90" pack="start" align="center" style="margin:2px">
+                            <label value="@load(mm.selectedShape.description)" multiline="true"
+                                   style="margin-right:5px"/>
+                        </hbox>
+                        <hbox hflex="10" pack="end" align="center" style="margin:2px">
+                            <button label="Save" tooltiptext="Сохранить изменения"
+                                    onClick="@command('saveShape', _id=mm.selectedShape._id)"/>
+                        </hbox>
+                    </hbox>
+                </hbox>
+                <hbox width="100%" pack="start">
+                    <hbox vflex="1" hflex="30" style="border:1px solid black; margin:2px">
+                        <vbox hflex="1" vflex="1" align="center" style="margin:2px">
                             <label>Площадь:</label>
                             <hbox align="center">
                                 <textbox disabled="true" style="text-align: right" value="@load(mm.area)"/>
@@ -63,7 +74,7 @@
                     </hbox>
                     <!--move shape-->
                     <hbox vflex="1" hflex="30" style="border:1px solid black; margin:2px">
-                        <vbox hflex="1" align="center" style="border:1px solid red; margin:2px">
+                        <vbox hflex="1" align="center" style="margin:2px">
                             <label>Новый центр:</label>
                             <hbox align="center">
                                 <label>X:</label>
@@ -85,7 +96,7 @@
                 <hbox width="100%" pack="start" style="margin-top:2px">
                     <!--scale shape-->
                     <hbox style="border:1px solid black; margin:2px" hflex="50">
-                        <vbox hflex="1" align="center" style="border:1px solid red; margin:2px">
+                        <vbox hflex="1" align="center" style="margin:2px">
                             <label>Коэффициент расширения/сужения:</label>
                             <textbox width="75px"
                                      constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры"
@@ -98,7 +109,7 @@
                     </hbox>
                     <!--roll shape-->
                     <hbox style="border:1px solid black; margin:2px" hflex="50">
-                        <vbox hflex="1" align="center" style="border:1px solid red; margin:2px">
+                        <vbox hflex="1" align="center" style="margin:2px">
                             <label>Угол поворота:</label>
                             <textbox width="75px"
                                      constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры"
@@ -111,7 +122,8 @@
                     </hbox>
                 </hbox>
             </vbox>
-            <cell hflex="40" style="border:1px solid silver"/>
+            <vbox hflex="35" style="border:1px solid silver">
+            </vbox>
         </hbox>
     </vlayout>
 </window>

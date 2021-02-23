@@ -25,9 +25,9 @@ public class MainViewModel {
     private String isVisibleParam = "default";
 
     //TODO: Настроить:
-    // 1) Сохранение отредактированной фигуры
-    // 2) Отрисовку одной/всех фигур
-    // 3) Настроить валидатор значений
+    // 1) Отрисовку одной/всех фигур
+    // 2) Настроить валидатор значений
+    // 3) Очищать параметры для
     @Command
     public void logout() {
         HttpConnector.logout();
@@ -54,30 +54,30 @@ public class MainViewModel {
     }
 
     @Command
-    @NotifyChange("shapeList")
+    @NotifyChange("selectedShape")
     public void moveShape(@BindingParam("_id") String _id, @BindingParam("x") String x, @BindingParam("y") String y) {
         if (_id != null && !_id.isEmpty()) {
             shapeService.moveShape(_id, x, y);
         }
-        findAll();
+        selectedShape = shapeService.updateSelectedShape(selectedShape);
     }
 
     @Command
-    @NotifyChange("shapeList")
+    @NotifyChange("selectedShape")
     public void rollShape(@BindingParam("_id") String _id, @BindingParam("angle") String angle) {
         if (_id != null && !_id.isEmpty()) {
             shapeService.rollShape(_id, angle);
         }
-        findAll();
+        selectedShape = shapeService.updateSelectedShape(selectedShape);
     }
 
     @Command
-    @NotifyChange("shapeList")
+    @NotifyChange("selectedShape")
     public void scaleShape(@BindingParam("_id") String _id, @BindingParam("scale") String scale) {
         if (_id != null && !_id.isEmpty()) {
             shapeService.scaleShape(_id, scale);
         }
-        findAll();
+        selectedShape = shapeService.updateSelectedShape(selectedShape);
     }
 
     @Command
@@ -123,6 +123,13 @@ public class MainViewModel {
             }
         }
         isVisibleParam = param;
+    }
+
+    @Command
+    @NotifyChange("params")
+    public void saveShape(@BindingParam("_id") String _id) {
+        shapeService.saveUpdatedShape(_id);
+        findAll();
     }
 
     public boolean isCreateBtn() {

@@ -71,6 +71,10 @@ public class ShapeService {
         updateShapeList(result);
     }
 
+    public void saveUpdatedShape(String _id) {
+        HttpConnector.saveUpdatedShape(Converter.shapeToJSON(findShapeInListBy_id(_id)));
+    }
+
     private void updateShapeList(String resultJson) {
         Shape newShape = Converter.jsonToShapes(resultJson).get(0);
         int index = -1;
@@ -95,5 +99,9 @@ public class ShapeService {
             }
         }
         return null;
+    }
+
+    public Shape updateSelectedShape(Shape shape) {
+        return findShapeInListBy_id(shape.get_id());
     }
 }

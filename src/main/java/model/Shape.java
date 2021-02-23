@@ -19,6 +19,8 @@ public class Shape {
     private int id;
     private Point center = new Point();
     @JsonIgnore
+    private String stringParams;
+    @JsonIgnore
     private String description;
     @JsonIgnore
     private String area;
@@ -66,9 +68,10 @@ public class Shape {
         this.type = type;
     }
 
-    public String getDescription() {
+    public String getStringParams() {
         StringBuilder params = new StringBuilder();
         if (!"круг".equalsIgnoreCase(this.ruName)) {
+            params.append("Координаты точек: ");
             for (int i = 0; i < points.size(); i++) {
                 params.append("x = ").append(points.get(i).getX()).append(", y = ").append(points.get(i).getY());
                 if (i + 1 != points.size()) {
@@ -76,7 +79,7 @@ public class Shape {
                 }
             }
         } else {
-            params.append("Центр: x = ")
+            params.append("Координаты центра: x = ")
                     .append(points.get(0).getX())
                     .append(", y = ")
                     .append(points.get(0).getX())
@@ -84,6 +87,12 @@ public class Shape {
                     .append(this.radius).append(".");
         }
         return params.toString();
+    }
+
+    public String getDescription() {
+        StringBuilder description = new StringBuilder();
+        description.append("Фигура - ").append(this.ruName).append(".\n").append(getStringParams());
+        return description.toString();
     }
 
     public String getArea() {

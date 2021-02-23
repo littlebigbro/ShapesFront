@@ -14,8 +14,6 @@ public class Shape {
     private String ruName;
     private List<Point> points;
     private double radius = 0;
-    @JsonIgnore
-    private String params;
     private String type;
     private String _id;
     private int id;
@@ -68,7 +66,7 @@ public class Shape {
         this.type = type;
     }
 
-    public String getParams() {
+    public String getDescription() {
         StringBuilder params = new StringBuilder();
         if (!"круг".equalsIgnoreCase(this.ruName)) {
             for (int i = 0; i < points.size(); i++) {
@@ -88,21 +86,27 @@ public class Shape {
         return params.toString();
     }
 
-    public String getDescription() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getRuName())
-                .append(" c номером = ")
-                .append(getId())
-                .append(", и точками: ")
-                .append(getParams());
-        return sb.toString();
-    }
-
     public String getArea() {
         return area;
     }
 
     public void setArea(String area) {
         this.area = area;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setRuName(String ruName) {
+        this.ruName = ruName;
+    }
+
+    public void setPoints(List<Point> points) {
+        this.points = points;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
     }
 }

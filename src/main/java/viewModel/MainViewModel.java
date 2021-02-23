@@ -18,10 +18,16 @@ public class MainViewModel {
 
     private boolean deleteResult = false;
     private String area = "0.0";
+    private boolean editBox = false;
+    private boolean editBtn = false;
+    private boolean deleteBtn = false;
+    private boolean createBtn = true;
+    private String isVisibleParam = "default";
+
     //TODO: Настроить:
-    // 1) Создание фигуры
-    // 2) Сохранение отредактированной/созданной фигуры
-    // 3) Отрисовку одной/всех фигур
+    // 1) Сохранение отредактированной фигуры
+    // 2) Отрисовку одной/всех фигур
+    // 3) Настроить валидатор значений
     @Command
     public void logout() {
         HttpConnector.logout();
@@ -81,6 +87,74 @@ public class MainViewModel {
             deleteResult = shapeService.deleteShape(_id);
         }
         findAll();
+    }
+
+    @Command
+    @NotifyChange({"createBtn", "editBtn", "editBox", "deleteBtn"})
+    public void isVisible(@BindingParam("param") String param) {
+        if ("createBtn".equalsIgnoreCase(param)) {
+            createBtn = true;
+            deleteBtn = false;
+            editBtn = false;
+            editBox = false;
+        } else if ("resultTable".equalsIgnoreCase(param)) {
+            createBtn = true;
+            deleteBtn = true;
+            editBtn = true;
+            editBox = false;
+        } else if ("editBox".equalsIgnoreCase(param)) {
+            createBtn = true;
+            deleteBtn = true;
+            editBtn = false;
+            editBox = true;
+        } else if ("topPanel".equalsIgnoreCase(param)) {
+            createBtn = true;
+            deleteBtn = false;
+            editBtn = false;
+            editBox = false;
+        } else if ("default".equalsIgnoreCase(param)) {
+            if ("default".equalsIgnoreCase(isVisibleParam)) {
+                createBtn = true;
+                deleteBtn = false;
+                editBtn = false;
+                editBox = false;
+            } else {
+                param = isVisibleParam;
+            }
+        }
+        isVisibleParam = param;
+    }
+
+    public boolean isCreateBtn() {
+        return createBtn;
+    }
+
+    public void setCreateBtn(boolean createBtn) {
+        this.createBtn = createBtn;
+    }
+
+    public boolean isEditBtn() {
+        return editBtn;
+    }
+
+    public void setEditBtn(boolean editBtn) {
+        this.editBtn = editBtn;
+    }
+
+    public boolean isEditBox() {
+        return editBox;
+    }
+
+    public void setEditBox(boolean editBox) {
+        this.editBox = editBox;
+    }
+
+    public boolean isDeleteBtn() {
+        return deleteBtn;
+    }
+
+    public void setDeleteBtn(boolean deleteBtn) {
+        this.deleteBtn = deleteBtn;
     }
 
     public List<Shape> getShapeList() {

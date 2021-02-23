@@ -78,7 +78,6 @@ public class HttpConnector {
     public static void logout() {
         String link = server + "/logout";
         String serverResponse = getConnection(link, "GET", false, null, null);
-        System.out.println(serverResponse);
     }
 
     public static String moveShape(String mapping) {
@@ -100,5 +99,18 @@ public class HttpConnector {
         byte[] bytes = mapping.getBytes(StandardCharsets.UTF_8);
         String serverResponse = getConnection(link, "POST", true, null, bytes);
         return serverResponse;
+    }
+
+    public static void createShape(String json) {
+        String link = server + "/insertShape";
+        byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
+        String serverResponse = getConnection(link, "PUT", true, null, bytes);
+        System.out.println(serverResponse);
+    }
+
+    public static int getNewId() {
+        String link = server + "/getNewId";
+        String serverResponse = getConnection(link, "GET", true, null, null);
+        return Integer.parseInt(serverResponse);
     }
 }

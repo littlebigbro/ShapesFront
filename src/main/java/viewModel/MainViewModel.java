@@ -3,12 +3,14 @@ package viewModel;
 import java.util.List;
 
 import Utils.HttpConnector;
+import model.Point;
 import model.Shape;
+import model.ShapeTypes;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.*;
 
 public class MainViewModel {
     private ShapeService shapeService = new ShapeService();
@@ -23,11 +25,12 @@ public class MainViewModel {
     private boolean deleteBtn = false;
     private boolean createBtn = true;
     private String isVisibleParam = "default";
+    private String chartType = "bubble";
+    private XYZModel chartModel = new SimpleXYZModel();
 
     //TODO: Настроить:
-    // 1) Отрисовку одной/всех фигур
-    // 2) Настроить валидатор значений
-    // 3) Очищать параметры для
+    // 1) Настроить валидатор значений
+    // 2) Очищать параметры для
     @Command
     public void logout() {
         HttpConnector.logout();
@@ -45,6 +48,49 @@ public class MainViewModel {
     public void findAll() {
         shapeList.clear();
         shapeList.addAll(shapeService.findAll());
+    }
+
+    @NotifyChange()
+    public void drawShape() {
+        chartModel.clear();
+        chartModel.setAutoSort(false);
+        if (ShapeTypes.CIRCLE.toString().equalsIgnoreCase(selectedShape.getName())) {
+            chartModel.setAutoSort(true);
+            chartType = "bubble";
+            double centerX = selectedShape.getPoints().get(0).getX();
+            double centerY = selectedShape.getPoints().get(0).getY();
+            double radius = selectedShape.getRadius();
+            chartModel.addValue(String.valueOf(selectedShape.getId()),
+                    (centerX - radius),
+                    (centerY - radius),
+                    new Double(0));
+            chartModel.addValue(String.valueOf(selectedShape.getId()),
+                    centerX,
+                    centerY,
+                    (radius * 2));
+            chartModel.addValue(String.valueOf(selectedShape.getId()),
+                    (centerX + radius),
+                    (centerY + radius),
+                    new Double(0));
+        } else if (ShapeTypes.RECTANGLE.toString().equalsIgnoreCase(selectedShape.getName())) {
+            chartType = "line";
+            for (Point point : selectedShape.getPoints()) {
+                chartModel.addValue(selectedShape.getId(), point.getX(), point.getY(), new Double(0));
+            }
+            chartModel.addValue(selectedShape.getId(),
+                    selectedShape.getPoints().get(0).getX(),
+                    selectedShape.getPoints().get(0).getY(),
+                    new Double(0));
+        } else if (ShapeTypes.TRIANGLE.toString().equalsIgnoreCase(selectedShape.getName())) {
+            chartType = "line";
+            for (Point point : selectedShape.getPoints()) {
+                chartModel.addValue(selectedShape.getId(), point.getX(), point.getY(), new Double(0));
+            }
+            chartModel.addValue(selectedShape.getId(),
+                    selectedShape.getPoints().get(0).getX(),
+                    selectedShape.getPoints().get(0).getY(),
+                    new Double(0));
+        }
     }
 
     @Command
@@ -90,7 +136,7 @@ public class MainViewModel {
     }
 
     @Command
-    @NotifyChange({"createBtn", "editBtn", "editBox", "deleteBtn"})
+    @NotifyChange({"createBtn", "editBtn", "editBox", "deleteBtn", "chartType", "chartModel"})
     public void isVisible(@BindingParam("param") String param) {
         if ("createBtn".equalsIgnoreCase(param)) {
             createBtn = true;
@@ -107,6 +153,7 @@ public class MainViewModel {
             deleteBtn = true;
             editBtn = false;
             editBox = true;
+            drawShape();
         } else if ("topPanel".equalsIgnoreCase(param)) {
             createBtn = true;
             deleteBtn = false;
@@ -191,5 +238,17 @@ public class MainViewModel {
 
     public boolean isDeleteResult() {
         return deleteResult;
+    }
+
+    public String getChartType() {
+        return chartType;
+    }
+
+    public XYZModel getChartModel() {
+        return chartModel;
+    }
+
+    public void setChartModel(XYZModel chartModel) {
+        this.chartModel = chartModel;
     }
 }

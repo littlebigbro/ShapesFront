@@ -85,6 +85,11 @@
             <artifactId>zkcharts</artifactId>
             <version>7.2.1.0-Eval</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.zkoss.graphics</groupId>-->
+<!--            <artifactId>graphics</artifactId>-->
+<!--            <version>0.8.0</version>-->
+<!--        </dependency>-->
     </dependencies>
     <build>
         <finalName>${project.artifactId}</finalName>

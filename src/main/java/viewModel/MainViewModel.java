@@ -10,6 +10,8 @@ import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.*;
 
 public class MainViewModel {
@@ -106,6 +108,7 @@ public class MainViewModel {
             shapeService.moveShape(_id, x, y);
         }
         selectedShape = shapeService.updateSelectedShape(selectedShape);
+        drawShape();
     }
 
     @Command
@@ -115,6 +118,7 @@ public class MainViewModel {
             shapeService.rollShape(_id, angle);
         }
         selectedShape = shapeService.updateSelectedShape(selectedShape);
+        drawShape();
     }
 
     @Command
@@ -124,13 +128,35 @@ public class MainViewModel {
             shapeService.scaleShape(_id, scale);
         }
         selectedShape = shapeService.updateSelectedShape(selectedShape);
+        drawShape();
+    }
+
+    @Command
+    @NotifyChange("params")
+    public void saveShape(@BindingParam("_id") String _id) {
+        shapeService.saveUpdatedShape(_id);
+        findAll();
     }
 
     @Command
     @NotifyChange("shapeList")
     public void delete(@BindingParam("_id") String _id) {
         if (_id != null && !_id.isEmpty()) {
-            deleteResult = shapeService.deleteShape(_id);
+            StringBuilder message = new StringBuilder();
+            message.append("Вы уверены что хотите удалить фигуру, с параметрами: \n")
+                    .append(selectedShape.getDescription()).append("?");
+            Messagebox.setTemplate("/zul/mBox.zul");
+            Messagebox.show(message.toString(),
+                    "Удалить?", Messagebox.OK | Messagebox.CANCEL,
+                    Messagebox.QUESTION,
+                    new EventListener() {
+                        public void onEvent(Event e) {
+                            if (Messagebox.ON_OK.equals(e.getName())) {
+                                deleteResult = shapeService.deleteShape(_id);
+                            }
+                        }
+                    }
+            );
         }
         findAll();
     }
@@ -141,42 +167,31 @@ public class MainViewModel {
         if ("createBtn".equalsIgnoreCase(param)) {
             createBtn = true;
             deleteBtn = false;
-            editBtn = false;
             editBox = false;
         } else if ("resultTable".equalsIgnoreCase(param)) {
             createBtn = true;
             deleteBtn = true;
-            editBtn = true;
-            editBox = false;
+            editBox = true;
+            drawShape();
         } else if ("editBox".equalsIgnoreCase(param)) {
             createBtn = true;
             deleteBtn = true;
-            editBtn = false;
             editBox = true;
             drawShape();
         } else if ("topPanel".equalsIgnoreCase(param)) {
             createBtn = true;
             deleteBtn = false;
-            editBtn = false;
             editBox = false;
         } else if ("default".equalsIgnoreCase(param)) {
             if ("default".equalsIgnoreCase(isVisibleParam)) {
                 createBtn = true;
                 deleteBtn = false;
-                editBtn = false;
                 editBox = false;
             } else {
                 param = isVisibleParam;
             }
         }
         isVisibleParam = param;
-    }
-
-    @Command
-    @NotifyChange("params")
-    public void saveShape(@BindingParam("_id") String _id) {
-        shapeService.saveUpdatedShape(_id);
-        findAll();
     }
 
     public boolean isCreateBtn() {

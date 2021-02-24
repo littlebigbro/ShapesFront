@@ -19,7 +19,7 @@ public class LoginViewModel {
             Executions.sendRedirect("/zul/main.zul");
         } else {
             isLogin = false;
-            Messagebox.show("Wrong username or password", null, 0, Messagebox.ERROR);
+            Messagebox.show("Неверный логин или пароль", null, 0, Messagebox.ERROR);
         }
     }
 

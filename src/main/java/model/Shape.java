@@ -91,7 +91,8 @@ public class Shape {
 
     public String getDescription() {
         StringBuilder description = new StringBuilder();
-        description.append("Фигура - ").append(this.ruName).append(".\n").append(getStringParams());
+        description.append("Фигура - ").append(this.ruName).append(".\n")
+                .append("id = ").append(this.id).append(". ").append(getStringParams());
         return description.toString();
     }
 

@@ -4,15 +4,15 @@
         <hbox width="100%" height="100%" align="center">
             <vbox>
                 <div align="right">
-                    <label width="40%">User:</label>
+                    <label width="40%" value="Логин:"/>
                     <textbox type="text" value="@bind(vm.username)" width="60%"/>
                 </div>
                 <div align="right">
-                    <label width="40%">Password:</label>
+                    <label width="40%" value="Пароль:"/>
                     <textbox type="password" value="@bind(vm.password)" width="60%"/>
                 </div>
                 <div align="center">
-                    <button label="Log in" image="/img/search.png" onClick="@command('login')"/>
+                    <button label="Вход" image="/img/search.png" onClick="@command('login')"/>
                 </div>
             </vbox>
         </hbox>

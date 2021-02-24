@@ -1,4 +1,4 @@
-<window closable="true" title="Create Shape" border="normal" width="350px" height="800"
+<window closable="true" title="Создать фигуру" border="normal" width="350px" height="800"
         sizable="true" viewModel="@id('cm') @init('viewModel.CreateViewModel')"
         onClose="@command('closeWithoutSave')">
     <vbox width="100%" align="center">
@@ -90,11 +90,11 @@
                 </hbox>
             </vbox>
         </vbox>
-        <vbox style="margin-top:5px">
+        <vbox id="buttonPanel" style="margin-top:5px">
             <hbox width="100%" pack="center">
-                <button label="Save"
+                <button label="Сохранить"
                         onClick="@command('addShape', x1=x1, y1=y1, x2=x2, y2=y2, x3=x3, y3=y3, x4=x4, y4=y4, radius=r)"/>
-                <button label="Close" onClick="@command('closeWithoutSave')"/>
+                <button label="Отмена" onClick="@command('closeWithoutSave')"/>
             </hbox>
         </vbox>
     </vbox>

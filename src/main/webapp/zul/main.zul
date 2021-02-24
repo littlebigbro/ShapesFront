@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<window title="Main menu" width="80%" height="100%" sizable="true" border="normal"
+<window title="Главное меню" width="75%" height="100%" sizable="true" border="normal"
         viewModel="@id('mm') @init('viewModel.MainViewModel')" onCreate="@command('findAll')"
         onClick="@command('isVisible', param='default')">
     <vlayout width="100%" height="100%" style="overflow:auto;">
@@ -8,36 +8,37 @@
                 <hbox width="100%" pack="end">
                     <cell hflex="90"/>
                     <cell hflex="10" align="right">
-                        <button label="Logout" onClick="@command('logout')"/>
+                        <button label="Выход" onClick="@command('logout')"/>
                     </cell>
                 </hbox>
                 <hbox width="100%" pack="center" style="margin-bottom:5px">
                     <cell hflex="60" align="left">
-                        <button label="Create" style="margin-right:5px" href="create.zul"/>
-                        <button id="editBtn" label="Edit" visible="@load(mm.editBtn)" style="margin-right:5px"
-                                onClick="@command('isVisible', param='editBox')"/>
-                        <button id="deleteBtn" label="Delete" visible="@load(mm.deleteBtn)" style="margin-right:5px"
+                        <button label="Создать" style="margin-right:5px" href="create.zul"/>
+                        <button id="deleteBtn" label="Удалить" visible="@load(mm.deleteBtn)" style="margin-right:5px"
                                 onClick="@command('delete', _id=mm.selectedShape._id)"/>
                     </cell>
                     <cell hflex="40" align="right">
                         <label style="margin-right:5px">Поиск:</label>
                         <textbox value="@save(mm.keyword)" style="margin-right:5px"/>
-                        <button label="Find" image="/img/search.png" onClick="@command('search')"/>
+                        <button label="Искать" image="/img/search.png" onClick="@command('search')"/>
                     </cell>
                 </hbox>
             </vbox>
         </vbox>
-        <hbox id="findResultTable" width="100%">
-            <listbox hflex="60" model="@init(mm.shapeList)" emptyMessage="Не найдено ни одной фигуры" rows="5"
+        <hbox id="findResultTable" hflex="100">
+            <listbox id="listBox" hflex="60" model="@init(mm.shapeList)" emptyMessage="Не найдено ни одной фигуры"
+                     rows="5"
                      selectedItem="@save(mm.selectedShape)"
                      onSelect="@command('isVisible', _id='resultTable')">
                 <listhead sizable="true">
-                    <listheader label="Номер" width="8%" align="center"/>
-                    <listheader label="Наименование" width="22%"/>
+                    <listheader label="№" width="8%" align="center"/>
+                    <listheader label="id" width="8%" align="center"/>
+                    <listheader label="Наименование" width="14%"/>
                     <listheader label="Параметры" width="70%"/>
                 </listhead>
                 <template name="model">
                     <listitem>
+                        <listcell label="${forEachStatus.index + 1}" style="border-right:1px solid silver"/>
                         <listcell label="@init(each.id)" style="border-right:1px solid silver"/>
                         <listcell label="@init(each.ruName)" style="border-right:1px solid silver"/>
                         <listcell label="@init(each.stringParams)"/>
@@ -45,23 +46,19 @@
                 </template>
             </listbox>
         </hbox>
-        <hbox width="100%">
-            <hbox hflex="60">
-                <vbox id="editBox" visible="@load(mm.editBox)" hflex="65" style="border:1px solid black;"
-                      onClick="@command('isVisible', param='editBox')">
-                    <hbox width="100%" pack="start">
-                        <hbox vflex="1" hflex="30" style="border:1px solid black; margin:2px">
-                            <hbox hflex="90" pack="start" align="center" style="margin:2px">
-                                <label value="@load(mm.selectedShape.description)" multiline="true"
-                                       style="margin-right:5px"/>
-                            </hbox>
-                            <hbox hflex="10" pack="end" align="center" style="margin:2px">
-                                <button label="Save" tooltiptext="Сохранить изменения"
-                                        onClick="@command('saveShape', _id=mm.selectedShape._id)"/>
-                            </hbox>
-                        </hbox>
-                    </hbox>
-                    <hbox width="100%" pack="start">
+        <vbox id="editBox" visible="@load(mm.editBox)" width="100%" onClick="@command('isVisible', param='editBox')">
+            <hbox width="100%" height="10%" style="border:1px solid black">
+                <hbox hflex="75" vflex="1" pack="start" align="center" style="margin:2px">
+                    <label value="@load(mm.selectedShape.description)" multiline="true" style="margin-right:5px"/>
+                </hbox>
+                <hbox hflex="25" vflex="1" pack="end" align="center" style="margin:2px">
+                    <button label="Сохранить" tooltiptext="Сохранить изменения в БД"
+                            onClick="@command('saveShape', _id=mm.selectedShape._id)"/>
+                </hbox>
+            </hbox>
+            <hbox width="100%" height="40%" pack="end" style="border:1px solid black; padding:5px">
+                <vbox id="shapeActions" hflex="100" style="border:1px solid black; padding:2px; margin-right:5px">
+                    <hbox width="100%" style="margin:1px">
                         <hbox vflex="1" hflex="30" style="border:1px solid black; margin:2px">
                             <vbox hflex="1" vflex="1" align="center" style="margin:2px">
                                 <label>Площадь:</label>
@@ -69,7 +66,7 @@
                                     <textbox disabled="true" style="text-align: right" value="@load(mm.area)"/>
                                 </hbox>
                                 <vbox width="100%" align="center" pack="end">
-                                    <button label="Calculate area"
+                                    <button label="Расчитать площадь"
                                             onClick="@command('calculateArea', _id=mm.selectedShape._id)"/>
                                 </vbox>
                             </vbox>
@@ -89,13 +86,13 @@
                                              style="text-align: right" value="@bind(yF)"/>
                                 </hbox>
                                 <vbox width="100%" align="center" pack="end">
-                                    <button label="Move shape"
+                                    <button label="Подвинуть фигуру"
                                             onClick="@command('moveShape', _id=mm.selectedShape._id, x=xF, y=yF)"/>
                                 </vbox>
                             </vbox>
                         </hbox>
                     </hbox>
-                    <hbox width="100%" pack="start" style="margin-top:2px">
+                    <hbox width="100%" style="margin:1px">
                         <!--scale shape-->
                         <hbox style="border:1px solid black; margin:2px" hflex="50">
                             <vbox hflex="1" align="center" style="margin:2px">
@@ -104,7 +101,7 @@
                                          constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры"
                                          style="text-align: right" value="@bind(scaleF)"/>
                                 <vbox width="100%" align="center" pack="end">
-                                    <button label="Scale shape"
+                                    <button label="Изменить масштаб"
                                             onClick="@command('scaleShape', _id=mm.selectedShape._id, scale=scaleF)"/>
                                 </vbox>
                             </vbox>
@@ -117,20 +114,18 @@
                                          constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры"
                                          style="text-align: right" value="@bind(angleF)"/>
                                 <vbox width="100%" align="center" pack="end">
-                                    <button label="Roll shape"
+                                    <button label="Повернуть фигуру"
                                             onClick="@command('rollShape', _id=mm.selectedShape._id, angle=angleF)"/>
                                 </vbox>
                             </vbox>
                         </hbox>
                     </hbox>
                 </vbox>
-            </hbox>
-            <hbox hflex="40">
-                <vbox id="shapeDraw" visible="@load(mm.editBox)" hflex="65" style="border:1px solid silver">
-                    <chart hflex="1" model="@init(mm.chartModel)" type="@bind(mm.chartType)" threeD="false"  fgAlpha="128"
-                           xAxis="x" yAxis="y"  />
+                <vbox id="shapeDraw" width="400px" style="border:1px solid black">
+                    <chart width="400px" height="400px" model="@init(mm.chartModel)" type="@bind(mm.chartType)"
+                           showLegend="false" threeD="false" fgAlpha="128" xAxis="x" yAxis="y"/>
                 </vbox>
             </hbox>
-        </hbox>
+        </vbox>
     </vlayout>
 </window>

@@ -75,6 +75,10 @@ public class ShapeService {
         HttpConnector.saveUpdatedShape(Converter.shapeToJSON(findShapeInListBy_id(_id)));
     }
 
+    public Shape getBy_id(String _id) {
+        return Converter.jsonToShapes(HttpConnector.getById(_id)).get(0);
+    }
+
     private void updateShapeList(String resultJson) {
         Shape newShape = Converter.jsonToShapes(resultJson).get(0);
         int index = -1;

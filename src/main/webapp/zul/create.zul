@@ -18,13 +18,13 @@
                 <hbox>
                     <hbox align="center">
                         <label>X:</label>
-                        <textbox value="@bind(x1)"
+                        <textbox value="@save(x1)"
                                  width="75px"
                                  constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры"/>
                     </hbox>
                     <hbox align="center">
                         <label>Y:</label>
-                        <textbox value="@bind(y1)"
+                        <textbox value="@save(y1)"
                                  width="75px"
                                  constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры"/>
                     </hbox>
@@ -35,13 +35,13 @@
                 <hbox>
                     <hbox align="center">
                         <label>X:</label>
-                        <textbox value="@bind(x2)"
+                        <textbox value="@save(x2)"
                                  width="75px"
                                  constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры"/>
                     </hbox>
                     <hbox align="center">
                         <label>Y:</label>
-                        <textbox value="@bind(y2)"
+                        <textbox value="@save(y2)"
                                  width="75px"
                                  constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры"/>
                     </hbox>
@@ -52,13 +52,13 @@
                 <hbox>
                     <hbox align="center">
                         <label>X:</label>
-                        <textbox value="@bind(x3)"
+                        <textbox value="@save(x3)"
                                  width="75px"
                                  constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры"/>
                     </hbox>
                     <hbox align="center">
                         <label>Y:</label>
-                        <textbox value="@bind(y3)"
+                        <textbox value="@save(y3)"
                                  width="75px"
                                  constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры"/>
                     </hbox>
@@ -69,13 +69,13 @@
                 <hbox>
                     <hbox align="center">
                         <label>X:</label>
-                        <textbox value="@bind(x4)"
+                        <textbox value="@save(x4)"
                                  width="75px"
                                  constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры"/>
                     </hbox>
                     <hbox align="center">
                         <label>Y:</label>
-                        <textbox value="@bind(y4)"
+                        <textbox value="@save(y4)"
                                  width="75px"
                                  constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры"/>
                     </hbox>
@@ -84,7 +84,7 @@
             <vbox id="radiusBox" visible="@load(cm.circleParam)" style="margin-top:5px">
                 <hbox align="center">
                     <label>Радиус:</label>
-                    <textbox value="@bind(r)"
+                    <textbox value="@save(r)"
                              width="75px"
                              constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры"/>
                 </hbox>

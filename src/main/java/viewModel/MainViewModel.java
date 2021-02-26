@@ -27,12 +27,15 @@ public class MainViewModel {
     private boolean deleteBtn = false;
     private boolean createBtn = true;
     private String isVisibleParam = "default";
-    private String chartType = "bubble";
-    private XYZModel chartModel = new SimpleXYZModel();
+    private String chartOneType = "bubble";
+    private String chartAllType = "line";
+    private XYZModel chartOneModel = new SimpleXYZModel();
+    private XYZModel chartAllModel = new SimpleXYZModel();
+    private boolean drawAllBox = true;
 
     //TODO: Настроить:
     // 1) Настроить валидатор значений
-    // 2) Очищать параметры для
+
     @Command
     public void logout() {
         HttpConnector.logout();
@@ -50,49 +53,16 @@ public class MainViewModel {
     public void findAll() {
         shapeList.clear();
         shapeList.addAll(shapeService.findAll());
+        if (selectedShape == null) {
+            drawAll();
+        }
     }
 
-    @NotifyChange()
-    public void drawShape() {
-        chartModel.clear();
-        chartModel.setAutoSort(false);
-        if (ShapeTypes.CIRCLE.toString().equalsIgnoreCase(selectedShape.getName())) {
-            chartModel.setAutoSort(true);
-            chartType = "bubble";
-            double centerX = selectedShape.getPoints().get(0).getX();
-            double centerY = selectedShape.getPoints().get(0).getY();
-            double radius = selectedShape.getRadius();
-            chartModel.addValue(String.valueOf(selectedShape.getId()),
-                    (centerX - radius),
-                    (centerY - radius),
-                    new Double(0));
-            chartModel.addValue(String.valueOf(selectedShape.getId()),
-                    centerX,
-                    centerY,
-                    (radius * 2));
-            chartModel.addValue(String.valueOf(selectedShape.getId()),
-                    (centerX + radius),
-                    (centerY + radius),
-                    new Double(0));
-        } else if (ShapeTypes.RECTANGLE.toString().equalsIgnoreCase(selectedShape.getName())) {
-            chartType = "line";
-            for (Point point : selectedShape.getPoints()) {
-                chartModel.addValue(selectedShape.getId(), point.getX(), point.getY(), new Double(0));
-            }
-            chartModel.addValue(selectedShape.getId(),
-                    selectedShape.getPoints().get(0).getX(),
-                    selectedShape.getPoints().get(0).getY(),
-                    new Double(0));
-        } else if (ShapeTypes.TRIANGLE.toString().equalsIgnoreCase(selectedShape.getName())) {
-            chartType = "line";
-            for (Point point : selectedShape.getPoints()) {
-                chartModel.addValue(selectedShape.getId(), point.getX(), point.getY(), new Double(0));
-            }
-            chartModel.addValue(selectedShape.getId(),
-                    selectedShape.getPoints().get(0).getX(),
-                    selectedShape.getPoints().get(0).getY(),
-                    new Double(0));
-        }
+    @Command
+    @NotifyChange("selectedShape")
+    public void updateSelectedShapeFromDB() {
+        selectedShape = shapeService.getBy_id(selectedShape.get_id());
+        drawShape();
     }
 
     @Command
@@ -139,7 +109,6 @@ public class MainViewModel {
     }
 
     @Command
-    @NotifyChange("shapeList")
     public void delete(@BindingParam("_id") String _id) {
         if (_id != null && !_id.isEmpty()) {
             StringBuilder message = new StringBuilder();
@@ -162,36 +131,101 @@ public class MainViewModel {
     }
 
     @Command
-    @NotifyChange({"createBtn", "editBtn", "editBox", "deleteBtn", "chartType", "chartModel"})
+    @NotifyChange({"createBtn", "editBtn",
+            "deleteBtn", "editBox",
+            "chartOneType", "chartOneModel",
+            "chartAllType", "chartAllModel",
+            "drawAllBox"})
     public void isVisible(@BindingParam("param") String param) {
+        createBtn = true;
         if ("createBtn".equalsIgnoreCase(param)) {
-            createBtn = true;
+            drawAllBox = true;
             deleteBtn = false;
             editBox = false;
+            drawAll();
         } else if ("resultTable".equalsIgnoreCase(param)) {
-            createBtn = true;
+            drawAllBox = false;
             deleteBtn = true;
             editBox = true;
             drawShape();
         } else if ("editBox".equalsIgnoreCase(param)) {
-            createBtn = true;
+            drawAllBox = false;
             deleteBtn = true;
             editBox = true;
             drawShape();
         } else if ("topPanel".equalsIgnoreCase(param)) {
-            createBtn = true;
+            drawAllBox = true;
             deleteBtn = false;
             editBox = false;
+            drawAll();
         } else if ("default".equalsIgnoreCase(param)) {
             if ("default".equalsIgnoreCase(isVisibleParam)) {
-                createBtn = true;
+                drawAllBox = true;
                 deleteBtn = false;
                 editBox = false;
+                drawAll();
             } else {
                 param = isVisibleParam;
             }
         }
         isVisibleParam = param;
+    }
+
+    public void drawShape() {
+        chartOneModel.clear();
+        chartOneModel.setAutoSort(false);
+        chartOneType = "line";
+        double firstX = selectedShape.getPoints().get(0).getX();
+        double firstY = selectedShape.getPoints().get(0).getY();
+        String series = String.valueOf(selectedShape.getId());
+        double zCoord = 0.0; //Для двумерных фигур должна быть равна нулю, для круга равна радиусу
+        if (ShapeTypes.CIRCLE.toString().equalsIgnoreCase(selectedShape.getName())) {
+            chartOneModel.setAutoSort(true);
+            chartOneType = "bubble";
+            double radius = selectedShape.getRadius();
+            //Добавляем невидимый круг в левой нижней координате
+            //Необходим для того чтобы "выбранный" круг вообще рисовался
+            chartOneModel.addValue(series, (firstX - radius - 1), (firstY - radius - 1), zCoord);
+            //Добавляем "выбранный" круг
+            chartOneModel.addValue(series, firstX, firstY, (radius * 2));
+            //Добавляем невидимый круг в правой верхней координате
+            //Необходим для того чтобы "выбранный" круг выравнивался по центру
+            chartOneModel.addValue(series, (firstX + radius + 1), (firstY + radius + 1), zCoord);
+        } else {
+            //Для остальный фигур рисовка аналогична
+            for (Point point : selectedShape.getPoints()) {
+                chartOneModel.addValue(series, point.getX(), point.getY(), zCoord);
+            }
+            //добавляем дополнительную точку для постороения последней прямой
+            chartOneModel.addValue(series, firstX, firstY, zCoord);
+        }
+    }
+
+    private void drawAll() {
+        double zCoord = 0.0;
+        chartOneModel.clear();
+        chartOneModel.setAutoSort(true);
+        chartOneType = "bubble";
+        chartAllModel.clear();
+        chartAllModel.setAutoSort(false);
+        chartAllType = "line";
+        for (Shape shape : shapeList) {
+            double firstX = shape.getPoints().get(0).getX();
+            double firstY = shape.getPoints().get(0).getY();
+            String series = String.valueOf(shape.getId());
+            if (ShapeTypes.CIRCLE.toString().equalsIgnoreCase(shape.getName())) {
+                double radius = shape.getRadius();
+                chartOneModel.addValue(series, (firstX - radius - 1), (firstY - radius - 1), zCoord);
+                chartOneModel.addValue(series, firstX, firstY, (radius * 2));
+                chartOneModel.addValue(series, (firstX + radius + 1), (firstY + radius + 1), zCoord);
+            } else {
+                for (Point point : shape.getPoints()) {
+                    chartAllModel.addValue(series, point.getX(), point.getY(), zCoord);
+                }
+                chartAllModel.addValue(series, firstX, firstY, zCoord);
+            }
+        }
+
     }
 
     public boolean isCreateBtn() {
@@ -255,15 +289,31 @@ public class MainViewModel {
         return deleteResult;
     }
 
-    public String getChartType() {
-        return chartType;
+    public String getChartOneType() {
+        return chartOneType;
     }
 
-    public XYZModel getChartModel() {
-        return chartModel;
+    public XYZModel getChartOneModel() {
+        return chartOneModel;
     }
 
-    public void setChartModel(XYZModel chartModel) {
-        this.chartModel = chartModel;
+    public void setChartOneModel(XYZModel chartOneModel) {
+        this.chartOneModel = chartOneModel;
+    }
+
+    public XYZModel getChartAllModel() {
+        return chartAllModel;
+    }
+
+    public void setChartAllModel(XYZModel chartAllModel) {
+        this.chartAllModel = chartAllModel;
+    }
+
+    public String getChartAllType() {
+        return chartAllType;
+    }
+
+    public boolean isDrawAllBox() {
+        return drawAllBox;
     }
 }

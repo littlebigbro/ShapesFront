@@ -48,16 +48,13 @@
         </hbox>
         <vbox id="editBox" visible="@load(mm.editBox)" width="100%" onClick="@command('isVisible', param='editBox')">
             <hbox width="100%" height="10%" style="border:1px solid black">
-                <hbox hflex="75" vflex="1" pack="start" align="center" style="margin:2px">
+                <hbox vflex="1" pack="start" align="center" style="margin:2px">
                     <label value="@load(mm.selectedShape.description)" multiline="true" style="margin-right:5px"/>
-                </hbox>
-                <hbox hflex="25" vflex="1" pack="end" align="center" style="margin:2px">
-                    <button label="Сохранить" tooltiptext="Сохранить изменения в БД"
-                            onClick="@command('saveShape', _id=mm.selectedShape._id)"/>
                 </hbox>
             </hbox>
             <hbox width="100%" height="40%" pack="end" style="border:1px solid black; padding:5px">
-                <vbox id="shapeActions" hflex="100" style="border:1px solid black; padding:2px; margin-right:5px">
+                <vbox id="shapeActions" hflex="100" height="392px"
+                      style="border:1px solid black; padding:2px; margin-right:5px">
                     <hbox width="100%" style="margin:1px">
                         <hbox vflex="1" hflex="30" style="border:1px solid black; margin:2px">
                             <vbox hflex="1" vflex="1" align="center" style="margin:2px">
@@ -79,11 +76,11 @@
                                     <label>X:</label>
                                     <textbox width="75px"
                                              constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры"
-                                             style="text-align: right" value="@bind(xF)"/>
+                                             style="text-align: right" value="@save(xF)"/>
                                     <label>Y:</label>
                                     <textbox width="75px"
                                              constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры"
-                                             style="text-align: right" value="@bind(yF)"/>
+                                             style="text-align: right" value="@save(yF)"/>
                                 </hbox>
                                 <vbox width="100%" align="center" pack="end">
                                     <button label="Подвинуть фигуру"
@@ -99,7 +96,7 @@
                                 <label>Коэффициент расширения/сужения:</label>
                                 <textbox width="75px"
                                          constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры"
-                                         style="text-align: right" value="@bind(scaleF)"/>
+                                         style="text-align: right" value="@save(scaleF)"/>
                                 <vbox width="100%" align="center" pack="end">
                                     <button label="Изменить масштаб"
                                             onClick="@command('scaleShape', _id=mm.selectedShape._id, scale=scaleF)"/>
@@ -112,7 +109,7 @@
                                 <label>Угол поворота:</label>
                                 <textbox width="75px"
                                          constraint="/^([\s]*)?([0-9]+([,|\.][0-9]+)?)?$/: Разрешены только цифры"
-                                         style="text-align: right" value="@bind(angleF)"/>
+                                         style="text-align: right" value="@save(angleF)"/>
                                 <vbox width="100%" align="center" pack="end">
                                     <button label="Повернуть фигуру"
                                             onClick="@command('rollShape', _id=mm.selectedShape._id, angle=angleF)"/>
@@ -120,11 +117,32 @@
                             </vbox>
                         </hbox>
                     </hbox>
+                    <vbox width="100%" height="152px" pack="end">
+                        <hbox width="100%" pack="end" style="margin:1px">
+                            <hbox pack="center" style="margin:2px">
+                                <button label="Сохранить" tooltiptext="Сохранить изменения в БД"
+                                        onClick="@command('saveShape', _id=mm.selectedShape._id)"/>
+                                <button label="Сбросить" tooltiptext="Сбросить изменения"
+                                        onClick="@command('updateSelectedShapeFromDB')"/>
+                            </hbox>
+                        </hbox>
+                    </vbox>
                 </vbox>
-                <vbox id="shapeDraw" width="400px" style="border:1px solid black">
-                    <chart width="400px" height="400px" model="@init(mm.chartModel)" type="@bind(mm.chartType)"
+                <vbox id="shapeDraw" width="390px" style="border:1px solid black">
+                    <chart width="390px" height="390px" model="@init(mm.chartOneModel)" type="@load(mm.chartOneType)"
                            showLegend="false" threeD="false" fgAlpha="128" xAxis="x" yAxis="y"/>
                 </vbox>
+            </hbox>
+        </vbox>
+        <vbox id="drawAll" visible="@load(mm.drawAllBox)" width="100%">
+            <hbox width="100%" pack="center">
+                <chart title="Треугольники и прямоугольники" width="450px" height="450px"
+                       model="@init(mm.chartAllModel)"
+                       type="@load(mm.chartAllType)" showLegend="false" threeD="false" fgAlpha="128" xAxis="x"
+                       yAxis="y"/>
+                <chart title="Круги" width="450px" height="450px" model="@init(mm.chartOneModel)"
+                       type="@load(mm.chartOneType)"
+                       showLegend="false" threeD="false" fgAlpha="128" xAxis="x" yAxis="y"/>
             </hbox>
         </vbox>
     </vlayout>

@@ -58,15 +58,13 @@ public class HttpConnector {
 
     public static String getAll() {
         String link = server + "/getAll";
-        String serverResponse = getConnection(link, "GET", false, null, null);
-        return serverResponse;
+        return getConnection(link, "GET", false, null, null);
     }
 
     public static String calcShapeArea(String json) {
         String link = server + "/calcShapeArea";
         byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
-        String serverResponse = getConnection(link, "POST", true, null, bytes);
-        return serverResponse;
+        return getConnection(link, "POST", true, null, bytes);
     }
 
     public static boolean deleteShape(String _id) {
@@ -77,35 +75,31 @@ public class HttpConnector {
 
     public static void logout() {
         String link = server + "/logout";
-        String serverResponse = getConnection(link, "GET", false, null, null);
+        getConnection(link, "GET", false, null, null);
     }
 
     public static String moveShape(String mapping) {
         String link = server + "/moveShape";
         byte[] bytes = mapping.getBytes(StandardCharsets.UTF_8);
-        String serverResponse = getConnection(link, "POST", true, null, bytes);
-        return serverResponse;
+        return getConnection(link, "POST", true, null, bytes);
     }
 
     public static String rollShape(String mapping) {
         String link = server + "/rollShape";
         byte[] bytes = mapping.getBytes(StandardCharsets.UTF_8);
-        String serverResponse = getConnection(link, "POST", true, null, bytes);
-        return serverResponse;
+        return getConnection(link, "POST", true, null, bytes);
     }
 
     public static String scaleShape(String mapping) {
         String link = server + "/scaleShape";
         byte[] bytes = mapping.getBytes(StandardCharsets.UTF_8);
-        String serverResponse = getConnection(link, "POST", true, null, bytes);
-        return serverResponse;
+        return getConnection(link, "POST", true, null, bytes);
     }
 
     public static void createShape(String json) {
         String link = server + "/insertShape";
         byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
-        String serverResponse = getConnection(link, "PUT", true, null, bytes);
-        System.out.println(serverResponse);
+        getConnection(link, "PUT", true, null, bytes);
     }
 
     public static int getNewId() {
@@ -117,7 +111,11 @@ public class HttpConnector {
     public static void saveUpdatedShape(String json) {
         String link = server + "/updateShape";
         byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
-        String serverResponse = getConnection(link, "POST", true, null, bytes);
-        System.out.println(serverResponse);
+        getConnection(link, "POST", true, null, bytes);
+    }
+
+    public static String getById(String _id) {
+        String link = server + "/getById";
+        return getConnection(link, "POST", true, _id, null);
     }
 }

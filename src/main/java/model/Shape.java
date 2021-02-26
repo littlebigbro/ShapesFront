@@ -82,7 +82,7 @@ public class Shape {
             params.append("Координаты центра: x = ")
                     .append(points.get(0).getX())
                     .append(", y = ")
-                    .append(points.get(0).getX())
+                    .append(points.get(0).getY())
                     .append(". Радиус = ")
                     .append(this.radius).append(".");
         }
